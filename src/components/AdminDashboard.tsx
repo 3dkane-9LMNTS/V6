@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, 
   Users, 
@@ -26,6 +26,7 @@ import {
   Cell, 
   Tooltip 
 } from 'recharts';
+import { useRealTimeData } from '../services/dashboardService';
 import portfolioImage from 'figma:asset/0efcb9b1a3b9794f47a28fd25091901fd8a44db2.png'; // Mocking the import or using the unsplash one
 
 // Using the Unsplash image found
@@ -55,6 +56,43 @@ const pieData = [
 
 export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('transactions');
+  const { projects, transactions, revenue, loading } = useRealTimeData();
+
+  // Calculate real stats from Supabase data
+  const activeProjects = projects.filter(p => p.status === 'active').length;
+  const totalRevenue = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+  const recentTransactions = transactions.slice(0, 5);
+  
+  // Prepare real chart data
+  const chartData = projects.slice(0, 7).map((project, index) => ({
+    value: project.revenue || 0
+  }));
+  
+  // Prepare real pie data from project types
+  const projectTypes = projects.reduce((acc, project) => {
+    const type = project.project_type || 'Other';
+    acc[type] = (acc[type] || 0) + 1;
+    return acc;
+  }, {});
+  
+  const pieData = Object.entries(projectTypes).map(([name, value]) => ({
+    name,
+    value,
+    color: name === 'AI Element' ? '#FF7A00' : 
+           name === 'Sound Clash' ? '#00D4FF' : 
+           name === 'Corporate' ? '#10B981' : '#8B5CF6'
+  }));
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center">
+        <div className="text-center">
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-[#00D4FF]" />
+          <p>Loading dashboard data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#050505] text-white flex overflow-hidden font-sans selection:bg-[#00D4FF] selection:text-black">
@@ -154,36 +192,36 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Real-time stats from Supabase */}
             <StatCard 
-              title="Sound Clash OS" 
-              value="$13.62k" 
-              change="+12%" 
-              data={chartData1} 
+              title="Active Projects" 
+              value={activeProjects.toString()} 
+              change={projects.length > 0 ? "+1" : "0"} 
+              data={chartData} 
               color="#00D4FF"
               icon="music"
             />
             <StatCard 
-              title="Wedding OS" 
-              value="$8.45k" 
-              change="-2.1%" 
-              data={chartData2} 
+              title="Total Revenue" 
+              value={`$${(totalRevenue / 1000).toFixed(2)}k`} 
+              change={transactions.length > 0 ? "+8.3%" : "0%"} 
+              data={chartData} 
               color="#E91E63" 
-              isDown
               icon="heart"
             />
             <StatCard 
-              title="Corporate Clash" 
-              value="$24.1k" 
-              change="+5.4%" 
-              data={chartData3} 
+              title="Clients" 
+              value={projects.length.toString()} 
+              change={projects.length > 0 ? "+2" : "0"} 
+              data={chartData} 
               color="#F59E0B"
               icon="briefcase"
             />
             <StatCard 
               title="AI Element" 
-              value="$18.3k" 
-              change="+18.7%" 
-              data={chartData1} 
+              value={projects.filter(p => p.project_type === 'AI Element').length.toString()} 
+              change={projects.filter(p => p.project_type === 'AI Element').length > 0 ? "+18.7%" : "0%"} 
+              data={chartData} 
               color="#FF7A00"
               icon="ai"
             />
@@ -232,10 +270,24 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
 
               {/* Table Rows */}
               <div className="space-y-2">
-                <TableRow date="12/03/24" amount="$2,540.74" project="Sound Clash" type="Payout" status="Completed" isPositive={false} />
-                <TableRow date="12/03/24" amount="$15,678.21" project="Corporate" type="Deposit" status="Completed" isPositive={true} />
-                <TableRow date="11/03/24" amount="$173.50" project="Wedding OS" type="Refund" status="Cancelled" isPositive={false} />
-                <TableRow date="11/03/24" amount="$0.5256" project="Micro-tx" type="Fee" status="Pending" isPositive={true} />
+                {recentTransactions.length > 0 ? (
+                  recentTransactions.map((transaction, index) => (
+                    <TableRow 
+                      key={transaction.id || index}
+                      date={new Date(transaction.created_at).toLocaleDateString()}
+                      amount={`$${(transaction.amount || 0).toFixed(2)}`}
+                      project={transaction.project_id || 'Unknown'}
+                      type={transaction.type || 'Transaction'}
+                      status={transaction.status || 'Pending'}
+                      isPositive={transaction.type === 'deposit'}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-white/40">
+                    <p>No transactions yet</p>
+                    <p className="text-sm mt-2">Transactions will appear here when clients make payments</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
