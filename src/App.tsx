@@ -10,6 +10,9 @@ import { PortfolioPage } from "./components/PortfolioPage";
 import { AdminDashboard } from "./components/AdminDashboard";
 import { CRM } from "./components/CRM";
 import { EventOSDemo } from "./components/EventOSDemo";
+import { PremiumLOAService } from "./components/PremiumLOAService";
+import { LOACommandCenter } from "./components/LOACommandCenter";
+import { AIServicesPortal } from "./components/AIServicesPortal";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -51,6 +54,12 @@ export default function App() {
         return <ClientPortal onNavigate={handleNavigate} />;
       case "event-os-demo":
         return <EventOSDemo onNavigate={handleNavigate} />;
+      case "premium-loa":
+        return <PremiumLOAService onNavigate={handleNavigate} />;
+      case "loa-command":
+        return <LOACommandCenter onNavigate={handleNavigate} />;
+      case "ai-services":
+        return <AIServicesPortal onNavigate={handleNavigate} />;
       default:
         return <HomePage onNavigate={handleNavigate} />;
     }
@@ -61,6 +70,9 @@ export default function App() {
     "crm",
     "client-portal",
     "event-os-demo",
+    "premium-loa",
+    "loa-command",
+    "ai-services",
   ].includes(currentPage);
 
   return (
@@ -71,10 +83,13 @@ export default function App() {
           onNavigate={handleNavigate}
         />
       )}
-      <main>{renderPage()}</main>
-      {!isStandalonePage && (
-        <Footer onNavigate={handleNavigate} />
-      )}
+      
+      <main className="flex-1">
+        {renderPage()}
+      </main>
+      
+      {/* Footer temporarily removed for deployment */}
+      
     </div>
   );
 }
