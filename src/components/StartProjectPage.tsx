@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ArrowRight, ArrowLeft, Check, Calendar, Mail, Phone, User, Building2, Globe, MessageSquare } from 'lucide-react';
-import { EmailConfirmation } from './EmailConfirmation';
 
 interface StartProjectPageProps {
   selectedPlan?: string;
@@ -36,11 +35,6 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
     'Mobile App Design',
     'Marketing Campaign',
     'Full Digital Transformation',
-    'AI-Powered Automation Systems',
-    'Machine Learning Solutions',
-    'Chatbot & Virtual Assistant Development',
-    'Predictive Analytics & Data Insights',
-    'AI Integration & API Development',
     'Other',
   ];
 
@@ -58,7 +52,7 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
   };
 
   const handleNext = () => {
-    if (step < 5) setStep(step + 1);
+    if (step < 4) setStep(step + 1);
   };
 
   const handleBack = () => {
@@ -68,7 +62,7 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
   const handleSubmit = () => {
     // In a real app, this would send data to a backend
     console.log('Form submitted:', formData);
-    setStep(6); // Show success message
+    setStep(5); // Show success message
   };
 
   const isStepValid = () => {
@@ -79,14 +73,12 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
         return formData.projectType !== '' && formData.timeline !== '';
       case 3:
         return formData.name !== '' && formData.email !== '';
-      case 4:
-        return true; // Email confirmation step is always valid
       default:
         return true;
     }
   };
 
-  if (step === 6) {
+  if (step === 5) {
     return (
       <div className="min-h-screen bg-[#1A1A1A] flex items-center justify-center px-4 py-20">
         <div className="max-w-2xl mx-auto text-center">
@@ -165,14 +157,14 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
             <span className="font-graffiti text-[#FF7A00]">Project</span>
           </h1>
           <p className="text-gray-400 text-lg">
-            Let's bring your vision to life in {5 - step + 1} simple steps
+            Let's bring your vision to life in {4 - step + 1} simple steps
           </p>
         </div>
 
         {/* Progress Bar */}
         <div className="mb-12">
           <div className="flex justify-between items-center mb-4">
-            {[1, 2, 3, 4, 5].map((num) => (
+            {[1, 2, 3, 4].map((num) => (
               <div key={num} className="flex items-center flex-1">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
@@ -183,7 +175,7 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
                 >
                   {step > num ? <Check size={20} /> : num}
                 </div>
-                {num < 5 && (
+                {num < 4 && (
                   <div
                     className={`flex-1 h-1 mx-2 transition-all ${
                       step > num ? 'bg-[#FF7A00]' : 'bg-[#222222]'
@@ -197,7 +189,6 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
             <span>Select Plan</span>
             <span>Project Details</span>
             <span>Contact Info</span>
-            <span>Email Confirmation</span>
             <span>Review</span>
           </div>
         </div>
@@ -356,17 +347,8 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
             </div>
           )}
 
-          {/* Step 4: Email Confirmation */}
+          {/* Step 4: Review */}
           {step === 4 && (
-            <EmailConfirmation 
-              formData={formData}
-              onConfirm={handleNext}
-              onBack={handleBack}
-            />
-          )}
-
-          {/* Step 5: Review */}
-          {step === 5 && (
             <div>
               <h2 className="text-2xl text-white mb-6">Review Your Information</h2>
               <div className="space-y-6">
@@ -442,7 +424,7 @@ export function StartProjectPage({ selectedPlan, onNavigate }: StartProjectPageP
               Back
             </button>
 
-            {step < 5 ? (
+            {step < 4 ? (
               <button
                 onClick={handleNext}
                 disabled={!isStepValid()}

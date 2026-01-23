@@ -136,27 +136,28 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
         </div>
       </section>
 
-      {/* AI Element Showcase */}
+      {/* Graffiti Element Showcase */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl sm:text-4xl text-white mb-6">
-                <span className="font-graffiti text-[#FF7A00]">AI Element:</span><br />
-                <span className="font-futuristic">Intelligent Digital Solutions</span>
+                <span className="font-graffiti text-[#FF7A00]">Graffiti Element:</span><br />
+                <span className="font-futuristic">Your Brand's Visual Identity</span>
               </h2>
               <p className="text-gray-400 text-lg mb-6 leading-relaxed">
-                Harness the power of artificial intelligence to transform your business operations. 
-                From intelligent automation to predictive analytics, we integrate cutting-edge AI 
-                technologies that give your business a competitive edge in the digital landscape.
+                Just as graffiti artists leave their mark on the urban landscape, 
+                we craft bold, unforgettable brand identities that stand out in 
+                the digital space. From apparel design to comprehensive brand systems, 
+                we make your mark impossible to ignore.
               </p>
               <ul className="space-y-3 mb-8">
                 {[
-                  'AI-Powered Automation Systems',
-                  'Machine Learning Solutions',
-                  'Chatbot & Virtual Assistant Development',
-                  'Predictive Analytics & Data Insights',
-                  'AI Integration & API Development',
+                  'Logo & Brand Identity Design',
+                  'Apparel & Merchandise Graphics',
+                  'Packaging & Print Design',
+                  'Social Media Visual Assets',
+                  'Style Guide Development',
                 ].map((item, index) => (
                   <li key={index} className="text-gray-400 flex items-start">
                     <span className="text-[#FF7A00] mr-3 text-xl">✓</span>
@@ -174,8 +175,8 @@ export function ServicesPage({ onNavigate }: ServicesPageProps) {
             <div className="relative">
               <div className="aspect-square rounded-lg overflow-hidden border-2 border-[#FF7A00]/30">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1677442136019-21780ecad995?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxBSSUyMHRlY2hub2xvZ3klMjBkYXRhJTIwc2NpZW5jZXxlbnwxfHx8fDE3NjQ3MTg2MzV8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                  alt="AI Technology Showcase"
+                  src="https://images.unsplash.com/photo-1511742667815-af572199b23a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwY2xvdGhpbmclMjBzdHJlZXR3ZWFyfGVufDF8fHx8MTc2NDI2ODIxMnww&ixlib=rb-4.1.0&q=80&w=1080"
+                  alt="Apparel Design Showcase"
                   className="w-full h-full object-cover"
                 />
               </div>

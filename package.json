@@ -1,7 +1,7 @@
 
   {
-      "name": "9LMNTS Studio",
-      "version": "0.1.1",
+      "name": "9lmnts-studio",
+      "version": "0.1.0",
       "private": true,
       "dependencies": {
           "@supabase/supabase-js": "^2.49.8",
@@ -48,15 +48,17 @@
           "recharts": "^2.15.2",
           "sonner": "^2.0.3",
           "tailwind-merge": "*",
-          "vaul": "^1.1.2",
-          "vite": "6.3.5"
+          "vaul": "^1.1.2"
       },
       "devDependencies": {
           "@types/node": "^20.10.0",
-          "@vitejs/plugin-react-swc": "^3.10.2"
+          "@vitejs/plugin-react-swc": "^3.10.2",
+          "vite": "6.3.5",
+          "serve": "^14.2.0"
       },
       "scripts": {
           "dev": "vite",
-          "build": "npx vite build"
+          "build": "vite build",
+          "start": "vite preview --host 0.0.0.0 --port 10000"
       }
   }
